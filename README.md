@@ -1,7 +1,7 @@
 # pcap_stat
 Wireshark packet statistics program
 
-It is output similarly to Wireshark's Statistics > Conversations and Endpoints".
+It is output similarly to Wireshark's Statistics > Conversations and Endpoints.
 
 # How to use
 ```
