@@ -14,6 +14,9 @@ make
 ./pcap_sata test.pcap
 ```
 
+# Supported OS
+Linux
+
 # TODO
 1. IPv6 support
 
