@@ -56,7 +56,7 @@ int main(int argc, char * argv[]){
 
         mac_conversations(mac_conv, mac_key, header);
 
-    }printf("\n");
+    }
     pcap_close(handle);
     
     join_ip_conversations(ip_conv);
@@ -68,19 +68,14 @@ int main(int argc, char * argv[]){
     int menu, layer;
     
     while(1){
-        printf("=====================================================\n");
-        printf("=             pcap statistics(exit: 3)              =\n");
-        printf("=====================================================\n");
-        printf("=       1.Conversations          2.Endpoints        =\n");
-        printf("=====================================================\n");
+        printf(">> pcap statistics(exit: 3)\n");
+        printf(">> 1.Conversations  2.Endpoints\n");
         scanf("%d", &menu);
         if(menu == 3){ return 0; }
         if(menu < 1 || menu > 2){
             printf("[-] Invalid Input\n");
         }
-        printf("=====================================================\n");
-        printf("=       1.IP                     2.MAC              =\n");
-        printf("=====================================================\n");
+        printf(">> 1.IP             2.MAC\n");
         scanf("%d", &layer);
         if(layer == 3){ return 0; }
         if(layer < 1 || layer > 3){
@@ -88,22 +83,18 @@ int main(int argc, char * argv[]){
         }else{
             if(menu == 1){
                 if(layer == 1){
-                    printf("=====================================================\n");
-                    printf("=                IP Conversations                   =\n");
+                    printf(">>    IP Conversations    <<\n");
                     print_ip_conversations(ip_conv);
                 }else if(layer == 2){
-                    printf("=====================================================\n");
-                    printf("=               MAC Conversations                   =\n");
+                    printf(">>    MAC Conversations    <<\n");
                     print_mac_conversations(mac_conv);
                 }
             }else if(menu == 2){
                 if(layer == 1){
-                    printf("=====================================================\n");
-                    printf("=                  IP Endpoints                     =\n");
+                    printf(">>    IP Endpoints    <<\n");
                     print_ip_endpoints(ip_end);
                 }else if(layer == 2){
-                    printf("=====================================================\n");
-                    printf("=                 MAC Endpoints                     =\n");
+                    printf(">>    MAC Endpoints    <<\n");
                     print_mac_endpoints(mac_end);
                 }
             }
