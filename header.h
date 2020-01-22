@@ -118,18 +118,18 @@ void join_ip_conversations(map<IP_key, values>&conv){
 }
 void print_ip_conversations(map<IP_key, values>&conv){
     map<IP_key, values>::iterator iter;
+    printf("---------------------------------------------------------------------------------------------------------------------------------------\n");
+    printf("|    Address A     |    Address B     |    Packets    |     Bytes     |  Packets A->B |   Bytes A->B  |  Packets B->A |   Bytes B->A  |\n");
+    printf("---------------------------------------------------------------------------------------------------------------------------------------\n");
     for(iter = conv.begin(); iter != conv.end(); ++iter){
-        printf("=====================================================\n");
         char src[18], dst[18];
         ntoa((*iter).first.src_ip, src);
         ntoa((*iter).first.dst_ip, dst);
 
-        printf("addr A( %s ) <-> addr B( %s )\n", src, dst);
-        printf("total   packets / bytes: %d / %d\n",(*iter).second.total_packets,(*iter).second.total_bytes);
-        printf("A -> B  packets / bytes: %d / %d\n", (*iter).second.Tx_packets, (*iter).second.Tx_bytes);
-        printf("B -> A  packets / bytes: %d / %d\n", (*iter).second.Rx_packets, (*iter).second.Rx_bytes);
+        printf("|%18s|%18s|%15d|%15d|%15d|%15d|%15d|%15d|\n", src, dst, (*iter).second.total_packets,(*iter).second.total_bytes,
+         (*iter).second.Tx_packets, (*iter).second.Tx_bytes, (*iter).second.Rx_packets, (*iter).second.Rx_bytes);
+        printf("---------------------------------------------------------------------------------------------------------------------------------------\n");
     }
-    printf("=====================================================\n");
 }
 // IP endpoints function
 void convert_conv_to_end(map<uint32_t, values>&end, map<IP_key, values>&conv, uint32_t key, values val){
@@ -184,22 +184,22 @@ void ip_endpoints(map<uint32_t, values>&end, map<IP_key, values>&conv){
 }
 void print_ip_endpoints(map<uint32_t, values>&end){
     map<uint32_t, values>::iterator iter;
+    printf("--------------------------------------------------------------------------------------------------------------------\n");
+    printf("|     Address      |    Packets    |     Bytes     |   Tx Packets  |    Tx Bytes   |   Rx Packets  |    Rx Bytes   |\n");
+    printf("--------------------------------------------------------------------------------------------------------------------\n");
     for(iter = end.begin(); iter != end.end(); ++iter){
-        printf("=====================================================\n");
         char addr[18];
         ntoa((*iter).first, addr);
 
-        printf("addr ( %s )\n", addr);
-        printf("total packets / bytes: %d / %d\n",(*iter).second.total_packets,(*iter).second.total_bytes);
-        printf("Tx    packets / bytes: %d / %d\n", (*iter).second.Tx_packets, (*iter).second.Tx_bytes);
-        printf("Rx    packets / bytes: %d / %d\n", (*iter).second.Rx_packets, (*iter).second.Rx_bytes);
+        printf("|%18s|%15d|%15d|%15d|%15d|%15d|%15d|\n", addr, (*iter).second.total_packets,(*iter).second.total_bytes,
+         (*iter).second.Tx_packets, (*iter).second.Tx_bytes, (*iter).second.Rx_packets, (*iter).second.Rx_bytes);
+        printf("--------------------------------------------------------------------------------------------------------------------\n");
     }
-    printf("=====================================================\n");
 }
 
 // MAC conversations function
-void print_MAC(const uint8_t *addr){
-    printf("%02X:%02X:%02X:%02X:%02X:%02X",
+void print_MAC(const uint8_t *addr, char * dst){
+    sprintf(dst, "%02X:%02X:%02X:%02X:%02X:%02X",
            addr[0],addr[1],addr[2],addr[3],
             addr[4],addr[5]);
 }
@@ -244,15 +244,20 @@ void join_mac_conversations(map<MAC_key, values>&conv){
 }
 void print_mac_conversations(map<MAC_key, values>&conv){
     map<MAC_key, values>::iterator iter;
-    for(iter = conv.begin(); iter != conv.end(); ++iter){
-        printf("=====================================================\n");
+    char src[40];
+    char dst[40];
 
-        printf("addr A( "); print_MAC(iter->first.src_mac); printf(") <-> addr B( "); print_MAC(iter->first.dst_mac); printf(" )\n");
-        printf("total   packets / bytes: %d / %d\n",(*iter).second.total_packets,(*iter).second.total_bytes);
-        printf("A -> B  packets / bytes: %d / %d\n", (*iter).second.Tx_packets, (*iter).second.Tx_bytes);
-        printf("B -> A  packets / bytes: %d / %d\n", (*iter).second.Rx_packets, (*iter).second.Rx_bytes);
+    printf("-----------------------------------------------------------------------------------------------------------------------------------------\n");
+    printf("|     Address A     |     Address B     |    Packets    |     Bytes     |  Packets A->B |   Bytes A->B  |  Packets B->A |   Bytes B->A  |\n");
+    printf("-----------------------------------------------------------------------------------------------------------------------------------------\n");
+
+    for(iter = conv.begin(); iter != conv.end(); ++iter){
+        print_MAC(iter->first.src_mac, src);
+        print_MAC(iter->first.dst_mac, dst);
+        printf("|%19s|%19s|%15d|%15d|%15d|%15d|%15d|%15d|\n", src, dst, (*iter).second.total_packets,(*iter).second.total_bytes,
+         (*iter).second.Tx_packets, (*iter).second.Tx_bytes, (*iter).second.Rx_packets, (*iter).second.Rx_bytes);
+        printf("-----------------------------------------------------------------------------------------------------------------------------------------\n");
     }
-    printf("=====================================================\n");
 }
 
 // MAC endpoints function
@@ -310,13 +315,16 @@ void mac_endpoints(map<MAC, values>&end, map<MAC_key, values>&conv){
 }
 void print_mac_endpoints(map<MAC, values>&end){
     map<MAC, values>::iterator iter;
-    for(iter = end.begin(); iter != end.end(); ++iter){
-        printf("=====================================================\n");
+    char addr[40];
 
-        printf("addr ( "); print_MAC(iter->first.mac); printf(" )\n");
-        printf("total packets / bytes: %d / %d\n",(*iter).second.total_packets,(*iter).second.total_bytes);
-        printf("Tx    packets / bytes: %d / %d\n", (*iter).second.Tx_packets, (*iter).second.Tx_bytes);
-        printf("Rx    packets / bytes: %d / %d\n", (*iter).second.Rx_packets, (*iter).second.Rx_bytes);
+    printf("---------------------------------------------------------------------------------------------------------------------\n");
+    printf("|     Address       |    Packets    |     Bytes     |  Packets A->B |   Bytes A->B  |  Packets B->A |   Bytes B->A  |\n");
+    printf("---------------------------------------------------------------------------------------------------------------------\n");
+    for(iter = end.begin(); iter != end.end(); ++iter){
+        print_MAC(iter->first.mac, addr);
+
+        printf("|%19s|%15d|%15d|%15d|%15d|%15d|%15d|\n", addr, (*iter).second.total_packets,(*iter).second.total_bytes,
+         (*iter).second.Tx_packets, (*iter).second.Tx_bytes, (*iter).second.Rx_packets, (*iter).second.Rx_bytes);
+        printf("---------------------------------------------------------------------------------------------------------------------\n");
     }
-    printf("=====================================================\n");
 }
